@@ -38,6 +38,13 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("logout", "You have successfully logged out.");
         }
         
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            response.sendRedirect("home");
+            return;
+        }
+        
         Cookie userCookie = getCookie(request.getCookies());
         
         if (userCookie != null && !userCookie.getValue().equals("")) {
