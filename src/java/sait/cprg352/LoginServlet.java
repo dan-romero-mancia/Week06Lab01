@@ -8,6 +8,7 @@ package sait.cprg352;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,13 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("logout", "You have successfully logged out.");
         }
         
+        Cookie userCookie = getCookie(request.getCookies());
+        
+        if (userCookie != null && !userCookie.getValue().equals("")) {
+            request.setAttribute("username", userCookie.getValue());
+            request.setAttribute("remember", "checked");
+        }
+        
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         
     }
@@ -54,6 +62,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
        String username = (String)request.getParameter("username");
        String password = (String)request.getParameter("password");
+       String[] rememberCheck = request.getParameterValues("remember");
        
        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
            request.setAttribute("errorMessage", "Invalid Login");
@@ -65,7 +74,22 @@ public class LoginServlet extends HttpServlet {
        User user = service.login(username, password);
        
        if (user == null) {
+           request.setAttribute("username", username);
            request.setAttribute("errorMessage", "Invalid Login");
+           getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+       }
+       
+       if (rememberCheck != null) {
+           response.addCookie(new Cookie("user", username));
+       }
+       
+       else {
+           Cookie cookie = getCookie(request.getCookies());
+           if (cookie != null) {
+                cookie.setMaxAge(-1);
+                cookie.setValue(null);
+                response.addCookie(cookie);
+           }
        }
        
        HttpSession session = request.getSession();
@@ -81,6 +105,16 @@ public class LoginServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
+    }
+    
+    private Cookie getCookie(Cookie[] cookies) {
+        Cookie userCookie = null;
+        for (Cookie c : cookies) {
+            if (c.getName().equals("user")) {
+                userCookie = c;
+            }
+        }
+        return userCookie;
     }
 
 }

@@ -18,9 +18,9 @@
             <div>User name: <input type="text" name="username" value="${username}"></div>
             <div>Password: <input type="password" name="password"></div>
             <input type="submit" value="Submit">
+            <div><input type="checkbox" name="remember" value="remember" ${remember}> Remember me</div>
         </form>
-        
-        <div><input type="checkbox" name="remember"> Remember me</div>
+       
         ${errorMessage}
         ${logout}
         
