@@ -25,7 +25,7 @@ public class Debug extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         ServletRequest request = pageContext.getRequest();
-        String domain = request.getServerName().replaceAll(".*\\.(?=.*\\.)", "");
+        String domain = request.getServerName();
         
         if (domain.startsWith("test") || domain.equals("localhost")) {
             String debug = request.getParameter("debug");
