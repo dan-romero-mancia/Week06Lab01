@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sait" uri="/WEB-INF/tlds/sait.tld" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,4 +17,9 @@
         <div>Hello ${username}</div>
         <a href="login?action=logout">Log out</a>
     </body>
+    <br/>
+    <sait:debug>
+        Remote Host: ${pageContext.request.remoteHost}<br />
+        Session ID: ${pageContext.session.id}
+    </sait:debug>
 </html>
