@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="login" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,15 +15,7 @@
     <body>
         <h1>Remember Me Login Page</h1>
         
-        <form action="login" method="POST">
-            <div>User name: <input type="text" name="username" value="${username}"></div>
-            <div>Password: <input type="password" name="password"></div>
-            <input type="submit" value="Submit">
-            <div><input type="checkbox" name="remember" value="remember" ${remember}> Remember me</div>
-        </form>
-       
-        ${errorMessage}
-        ${logout}
+        <login:login/>
         
     </body>
 </html>
